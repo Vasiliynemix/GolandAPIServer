@@ -1,0 +1,129 @@
+basePath: /
+definitions:
+  response.ErrorResponse:
+    description: Error Response
+    properties:
+      error:
+        description: Error message
+        example: Error message
+        type: string
+      status:
+        description: Always ERROR
+        example: ERROR
+        type: string
+    required:
+    - error
+    - status
+    type: object
+  response.UserResponse:
+    description: User Response
+    properties:
+      data:
+        allOf:
+        - $ref: '#/definitions/structures.UserShow'
+        description: User info, if status is OK else nil
+      status:
+        description: OK or ERROR
+        example: OK
+        type: string
+    required:
+    - data
+    - status
+    type: object
+  structures.UserSetRequest:
+    description: User setter
+    properties:
+      first_name:
+        description: This is FirstName in Telegram, may be nil
+        example: firstname
+        format: string
+        type: string
+      last_name:
+        description: This is LastName in Telegram, may be nil
+        example: lastname
+        format: string
+        type: string
+      tg_id:
+        description: This is TgID in Telegram
+        example: 54321
+        format: int64
+        type: integer
+      user_name:
+        description: This is UserName in Telegram, may be nil
+        example: username
+        format: string
+        type: string
+    required:
+    - tg_id
+    type: object
+  structures.UserShow:
+    description: Show User Info
+    properties:
+      first_name:
+        description: This is FirstName in Telegram, may be nil
+        example: firstname
+        format: string
+        type: string
+      last_name:
+        description: This is LastName in Telegram, may be nil
+        example: lastname
+        format: string
+        type: string
+      tg_id:
+        description: This is TgID in Telegram
+        example: 54321
+        format: int64
+        type: integer
+      user_name:
+        description: This is UserName in Telegram, may be nil
+        example: username
+        format: string
+        type: string
+    required:
+    - first_name
+    - last_name
+    - tg_id
+    - user_name
+    type: object
+host: localhost:8080
+info:
+  contact: {}
+  description: Just for fun API description
+  title: Just for fun API
+  version: "1.0"
+paths:
+  /api/user/:
+    post:
+      consumes:
+      - application/json
+      description: Set or Update user
+      parameters:
+      - description: User
+        in: body
+        name: UserInfo
+        required: true
+        schema:
+          $ref: '#/definitions/structures.UserSetRequest'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: User created
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+        "202":
+          description: User updated
+          schema:
+            $ref: '#/definitions/response.UserResponse'
+        "400":
+          description: User not found
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+        "500":
+          description: Server error
+          schema:
+            $ref: '#/definitions/response.ErrorResponse'
+      summary: Set or Update user
+      tags:
+      - users
+swagger: "2.0"

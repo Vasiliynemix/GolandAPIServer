@@ -1,0 +1,20 @@
+db:
+  migration_dir_name: migrator
+  driver: postgres
+  ssl_mode: disable
+  pool:
+    max_idle_conns: 10
+    max_open_conns: 30
+    idle_timeout: 300s
+
+server:
+  host: localhost
+  port: 8080
+  base_url: http://localhost:8080
+
+swagger:
+  endpoint: /endpoint/*
+  url: /endpoint/doc.json
+
+log:
+  dir: logs
